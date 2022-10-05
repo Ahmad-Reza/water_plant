@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Water Plant</string>
+    <string name="welcome_title">Welcome to WATER PLANT</string>
+    <string name="water_plant_description">We will help you to schedule time for particular plant to water and we will notify you on the same time with particular plant image</string>
+    <string name="sign_up_label">sign up</string>
+    <string name="already_member_label">Already a member?</string>
+    <string name="sign_in_label">sign in</string>
+    <string name="username_label">username</string>
+    <string name="password_label">password</string>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/logo_bg"
+    tools:context=".activity.SplashActivity">
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:gravity="center"
+        android:text="@string/welcome_title"
+        android:layout_marginHorizontal="16dp"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/description_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_view"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="24dp"
+        android:gravity="center"
+        android:text="@string/water_plant_description"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_regular"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/logo_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_view"
+        android:layout_below="@id/description_view"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@mipmap/logo" />
+
+    <LinearLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="24dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/signup_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginHorizontal="24dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/sign_up_label"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/logo_bg" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/already_member_label"
+            android:textColor="@color/colorDisable"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/signin_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_regular"
+            android:background="@color/transparent"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:textColor="@color/white"
+            android:text="@string/sign_in_label" />
+    </LinearLayout>
+</RelativeLayout>
