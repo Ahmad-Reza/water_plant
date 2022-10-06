@@ -7,4 +7,7 @@
     <string name="sign_in_label">sign in</string>
     <string name="username_label">username</string>
     <string name="password_label">password</string>
+    <string name="don_t_you_have_an_account_label">Don\'t you have an account?</string>
+    <string name="sign_up_from_here_label">Sign Up from here</string>
+    <string name="require_field_error">Require field</string>
 </resources>

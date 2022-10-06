@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Button signInBtn = findViewById(R.id.signin_button);
         signInBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
         });
     }
