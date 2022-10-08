@@ -10,4 +10,7 @@
     <string name="don_t_you_have_an_account_label">Don\'t you have an account?</string>
     <string name="sign_up_from_here_label">Sign Up from here</string>
     <string name="require_field_error">Require field</string>
+    <string name="my_garden_label">My Garden</string>
+    <string name="schedule_plant_label">Schedule Plant</string>
+    <string name="my_plant_label">My Plants</string>
 </resources>

@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="logo_bg">#1D366F</color>
-    <color name="logo_font">#08C076</color>
+    <color name="logo_font">#066740</color>
     <color name="colorPrimary">#3388FF</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#0DFCCE</color>
@@ -37,4 +37,5 @@
     <color name="optionBackground">#ECF1F4</color>
     <color name="promptColor">#F23D5CFF</color>
     <color name="promptFocalColor">#2A47DE</color>
+    <color name="primary_font_color">#FF066740</color>
 </resources>
