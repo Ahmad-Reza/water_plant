@@ -13,4 +13,7 @@
     <string name="my_garden_label">My Garden</string>
     <string name="schedule_plant_label">Schedule Plant</string>
     <string name="my_plant_label">My Plants</string>
+    <string name="choose_your_plant_from_label">Choose your Plant from...</string>
+    <string name="camera_label">Camera</string>
+    <string name="gallery_label">Gallery</string>
 </resources>
