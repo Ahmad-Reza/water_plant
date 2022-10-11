@@ -1,17 +1,31 @@
 package com.example.waterplant.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.waterplant.R;
+import com.example.waterplant.fragment.AddPlantBottomSheetFragment;
 import com.example.waterplant.fragment.MyGardenFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
+import com.example.waterplant.model.PlantModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements AddPlantBottomSheetFragment.SheetItemClickListener {
+    private static final int ADD_PLANT_REQUEST = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +58,69 @@ public class HomeActivity extends AppCompatActivity {
 
         gardenTab.setOnClickListener(listener);
         scheduleTab.setOnClickListener(listener);
+
+        FloatingActionButton addPlantBtn = findViewById(R.id.add_plant_button);
+        addPlantBtn.setOnClickListener(view -> new AddPlantBottomSheetFragment().show(getSupportFragmentManager(), "AddPlantBottomSheetFragment"));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_PLANT_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri plantUri = data != null ? data.getData() : null;
+
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                final View dialogView = getLayoutInflater().inflate(R.layout.plant_property_dialog, null);
+                dialogBuilder.setTitle("Plant Details");
+                dialogBuilder.setView(dialogView);
+
+                ImageView plantView = dialogView.findViewById(R.id.plant_view);
+                Picasso.get().load(plantUri).into(plantView);
+
+                EditText nameView = dialogView.findViewById(R.id.name_input);
+                EditText categoryView = dialogView.findViewById(R.id.category_input);
+
+                AlertDialog alertDialog = dialogBuilder.create();
+                dialogBuilder.setPositiveButton("Save", ((dialogInterface, i) -> {
+                    String name = nameView.getText().toString();
+                    String category = categoryView.getText().toString();
+
+                    if (plantUri != null) {
+                        PlantModel plant = new PlantModel(plantUri, name, category);
+                        updatePlant(plant);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please, select Correct Image", Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                }));
+
+                dialogBuilder.setNegativeButton("Cancel", ((dialogInterface, i) -> alertDialog.dismiss()));
+
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+            }
+        }
+    }
+
+    private void updatePlant(PlantModel plant) {
+
+        // TODO update plant data into database
+
+    }
+
+    @Override
+    public void onSheetItemClick(String selectedItem) {
+        if (AddPlantBottomSheetFragment.SELECTED_CAMERA.equals(selectedItem)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, ADD_PLANT_REQUEST);
+
+        } else if (AddPlantBottomSheetFragment.SELECTED_GALLERY.equals(selectedItem)) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/png");
+            startActivityForResult(intent, ADD_PLANT_REQUEST);
+        }
     }
 }

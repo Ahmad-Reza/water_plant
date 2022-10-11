@@ -16,4 +16,6 @@
     <string name="choose_your_plant_from_label">Choose your Plant from...</string>
     <string name="camera_label">Camera</string>
     <string name="gallery_label">Gallery</string>
+    <string name="hint_name_msg">Name eg, Rose</string>
+    <string name="hint_category_msg">Category eg, Flower</string>
 </resources>
