@@ -4,32 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.SignInActivity">
 
     <LinearLayout
-        android:id="@+id/Header_view"
+        android:id="@+id/header_container_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_corners_bottom_half"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <Button
             android:id="@+id/back_button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/white" />
+            android:background="@color/transparent"
+            app:icon="@drawable/ic_arrow_back"
+            app:iconTint="@color/white" />
 
         <ImageView
-            android:id="@+id/logo_view"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:src="@mipmap/logo" />
     </LinearLayout>
 
@@ -37,29 +36,40 @@
         android:id="@+id/body_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_view"
-        android:layout_below="@+id/Header_view"
+        android:layout_above="@+id/bottom_container_layout"
+        android:layout_below="@+id/header_container_layout"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="50dp"
         android:gravity="center">
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="@string/sign_in_now_label"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/color_primary"
+            android:textSize="24sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:startIconDrawable="@drawable/ic_person">
+            android:layout_below="@+id/textview"
+            android:hint="@string/username_label"
+            app:startIconDrawable="@drawable/ic_person"
+            app:startIconTint="@color/color_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat_regular"
-                android:hint="@string/username_label"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:selectAllOnFocus="true"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,25 +81,32 @@
             android:layout_below="@id/username_layout"
             android:layout_marginTop="16dp"
             app:endIconMode="password_toggle"
+            android:hint="@string/password_label"
             app:startIconDrawable="@drawable/ic_lock_outline">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/transparent"
+                android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat_regular"
-                android:hint="@string/password_label"
-                android:imeOptions="actionGo"
                 android:inputType="textPassword"
-                android:selectAllOnFocus="true"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/forgot_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_layout"
+            android:layout_alignParentEnd="true"
+            android:padding="0dp"
+            android:text="@string/forgot_password_label"
+            android:textColor="@color/greyText" />
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/bottom_view"
+        android:id="@+id/bottom_container_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -102,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:layout_marginHorizontal="24dp"
-            android:backgroundTint="@color/logo_bg"
+            android:backgroundTint="@color/color_primary"
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/sign_in_label"
             android:textAlignment="center"
@@ -124,10 +141,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/transparent"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/roboto_medium"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
             android:text="@string/sign_up_from_here_label"
-            android:textColor="@color/logo_bg" />
+            android:textColor="@color/color_primary" />
     </LinearLayout>
 </RelativeLayout>
