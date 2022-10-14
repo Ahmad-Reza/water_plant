@@ -19,13 +19,13 @@ public class SplashActivity extends AppCompatActivity {
 
         ExtendedFloatingActionButton signUpBtn = findViewById(R.id.signup_button);
         signUpBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            Intent intent = new Intent(SplashActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
 
         Button signInBtn = findViewById(R.id.signin_button);
         signInBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
             startActivity(intent);
         });
     }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/logo_bg"
+    android:background="@color/color_primary"
     tools:context=".activity.SplashActivity">
 
     <TextView
@@ -35,15 +35,15 @@
         android:id="@+id/logo_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_view"
+        android:layout_above="@+id/bottom_container_layout"
         android:layout_below="@id/description_view"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        android:src="@mipmap/logo" />
+        android:src="@mipmap/logo_bg" />
 
     <LinearLayout
-        android:id="@+id/bottom_view"
+        android:id="@+id/bottom_container_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -61,7 +61,7 @@
             android:textAlignment="center"
             android:textAllCaps="true"
             android:fontFamily="@font/montserrat_regular"
-            android:textColor="@color/logo_bg" />
+            android:textColor="@color/color_primary" />
 
         <TextView
             android:layout_width="match_parent"

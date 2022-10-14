@@ -10,7 +10,7 @@
         android:id="@+id/image_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/logo"/>
+        android:src="@mipmap/logo_bg"/>
 
     <TextView
         android:id="@+id/name_view"
