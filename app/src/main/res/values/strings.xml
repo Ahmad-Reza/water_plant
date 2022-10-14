@@ -2,14 +2,18 @@
     <string name="app_name">Water Plant</string>
     <string name="welcome_title">Welcome to WATER PLANT</string>
     <string name="water_plant_description">We will help you to schedule time for particular plant to water and we will notify you on the same time with particular plant image</string>
-    <string name="sign_up_label">sign up</string>
+    <string name="sign_up_label">Sign Up</string>
     <string name="already_member_label">Already a member?</string>
-    <string name="sign_in_label">sign in</string>
-    <string name="username_label">username</string>
-    <string name="password_label">password</string>
+    <string name="sign_in_label">Sign in</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="repeat_password_label">Repeat password</string>
     <string name="don_t_you_have_an_account_label">Don\'t you have an account?</string>
     <string name="sign_up_from_here_label">Sign Up from here</string>
+    <string name="sign_in_from_here_label">Sign In from here</string>
     <string name="require_field_error">Require field</string>
+    <string name="invalid_authorization_error">Invalid username and password, try again</string>
+    <string name="not_match_error">Password does not match</string>
     <string name="my_garden_label">My Garden</string>
     <string name="schedule_plant_label">Schedule Plant</string>
     <string name="my_plant_label">My Plants</string>
@@ -18,4 +22,9 @@
     <string name="gallery_label">Gallery</string>
     <string name="hint_name_msg">Name eg, Rose</string>
     <string name="hint_category_msg">Category eg, Flower</string>
+    <string name="sign_in_now_label">Sign In Now</string>
+    <string name="forgot_password_label">Forgot Password</string>
+    <string name="create_account_label">Create Account</string>
+    <string name="terms_condition_msg">I agree to the <a href="https://www.linkedin.com/in/mrahmad/">Terms and Conditions</a></string>
+    <string name="email_label">Email Id</string>
 </resources>
