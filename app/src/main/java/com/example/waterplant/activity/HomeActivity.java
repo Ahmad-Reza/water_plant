@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +23,9 @@ import com.example.waterplant.fragment.AddPlantBottomSheetFragment;
 import com.example.waterplant.fragment.MyGardenFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
 import com.example.waterplant.model.PlantModel;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +36,44 @@ public class HomeActivity extends AppCompatActivity implements AddPlantBottomShe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        MaterialToolbar toolbar = findViewById(R.id.material_toolbar);
+        toolbar.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.about_item) {
+
+                return true;
+
+            } else if (itemId == R.id.logout_item) {
+
+                return true;
+            }
+
+            return false;
+        });
+
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout);
+        AppBarLayout appBarLayout = findViewById(R.id.appbar_layout);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = true;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbarLayout.setTitle(getString(R.string.my_plant_label));
+
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbarLayout.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
         TextView gardenTab = findViewById(R.id.garden_tab_view);
         TextView scheduleTab = findViewById(R.id.schedule_tab_view);
@@ -58,9 +101,25 @@ public class HomeActivity extends AppCompatActivity implements AddPlantBottomShe
 
         gardenTab.setOnClickListener(listener);
         scheduleTab.setOnClickListener(listener);
-
         FloatingActionButton addPlantBtn = findViewById(R.id.add_plant_button);
         addPlantBtn.setOnClickListener(view -> new AddPlantBottomSheetFragment().show(getSupportFragmentManager(), "AddPlantBottomSheetFragment"));
+    }
+
+    private void updateToolbarIcon(MaterialToolbar toolbar, boolean isShowing) {
+        MenuItem aboutItem = toolbar.getMenu().findItem(R.id.about_item);
+        MenuItem logoutItem = toolbar.getMenu().findItem(R.id.logout_item);
+
+        if (!isShowing) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                aboutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.black));
+                logoutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.black));
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                aboutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.white));
+                logoutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.white));
+            }
+        }
     }
 
     @Override
