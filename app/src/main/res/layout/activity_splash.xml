@@ -40,7 +40,7 @@
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        android:src="@mipmap/logo_bg" />
+        android:src="@mipmap/logo" />
 
     <LinearLayout
         android:id="@+id/bottom_container_layout"

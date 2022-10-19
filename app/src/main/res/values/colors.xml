@@ -7,14 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="color_primary">#1D366F</color>
-    <color name="logo_font">#066740</color>
-    <color name="textColor">#3f3f3f</color>
-    <color name="grey54">#545454</color>
-    <color name="greyBD">#BDBDBD</color>
+    <color name="color_primary">#066740</color>
+    <color name="text_color_primary">#066740</color>
+    <color name="text_color_on_primary">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="greyText">#828282</color>
+    <color name="textColor">#3f3f3f</color>
     <color name="colorDisable">#BDBDBD</color>
     <color name="actionSuccess">#31D0AA</color>
-    <color name="primary_font_color">#FF066740</color>
 </resources>
