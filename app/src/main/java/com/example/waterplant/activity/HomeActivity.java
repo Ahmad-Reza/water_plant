@@ -18,9 +18,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.waterplant.R;
-import com.example.waterplant.fragment.AddPlantBottomSheetFragment;
+import com.example.waterplant.adapter.ViewPagerAdapter;
 import com.example.waterplant.fragment.MyGardenFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
 import com.example.waterplant.model.PlantModel;
@@ -30,6 +32,9 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private static final int ADD_PLANT_REQUEST = 1000;
@@ -80,24 +85,47 @@ public class HomeActivity extends AppCompatActivity {
         TextView gardenTab = findViewById(R.id.garden_tab_view);
         TextView scheduleTab = findViewById(R.id.schedule_tab_view);
 
+        ViewPager2 viewPager = findViewById(R.id.viewpager_view);
+        viewPager.setAdapter(new ViewPagerAdapter(this, getFragments()));
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == 0) {
+                    gardenTab.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.tab_select));
+                    gardenTab.setTextColor(AppCompatResources.getColorStateList(getApplicationContext(), R.color.white));
+
+                    scheduleTab.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.tab_deselected));
+                    scheduleTab.setTextColor(AppCompatResources.getColorStateList(getApplicationContext(), R.color.textColor));
+
+                } else if (position == 1){
+                    scheduleTab.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.tab_select));
+                    scheduleTab.setTextColor(AppCompatResources.getColorStateList(getApplicationContext(), R.color.white));
+
+                    gardenTab.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.tab_deselected));
+                    gardenTab.setTextColor(AppCompatResources.getColorStateList(getApplicationContext(), R.color.textColor));
+                }
+            }
+        });
+
         View.OnClickListener listener = view -> {
             if (view.getId() == R.id.garden_tab_view) {
                 gardenTab.setBackground(AppCompatResources.getDrawable(this, R.drawable.tab_select));
                 gardenTab.setTextColor(AppCompatResources.getColorStateList(this, R.color.white));
 
-                scheduleTab.setBackground(AppCompatResources.getDrawable(this, R.drawable.tab_deselect));
+                scheduleTab.setBackground(AppCompatResources.getDrawable(this, R.drawable.round_corners));
                 scheduleTab.setTextColor(AppCompatResources.getColorStateList(this, R.color.textColor));
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, new MyGardenFragment()).addToBackStack(null).commit();
+                viewPager.setCurrentItem(0, true);
 
             } else if (view.getId() == R.id.schedule_tab_view) {
                 scheduleTab.setBackground(AppCompatResources.getDrawable(this, R.drawable.tab_select));
                 scheduleTab.setTextColor(AppCompatResources.getColorStateList(this, R.color.white));
 
-                gardenTab.setBackground(AppCompatResources.getDrawable(this, R.drawable.tab_deselect));
+                gardenTab.setBackground(AppCompatResources.getDrawable(this, R.drawable.round_corners));
                 gardenTab.setTextColor(AppCompatResources.getColorStateList(this, R.color.textColor));
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, new SchedulePlantFragment()).addToBackStack(null).commit();
+                viewPager.setCurrentItem(1, true);
             }
         };
 
@@ -128,6 +156,13 @@ public class HomeActivity extends AppCompatActivity {
             sheetDialog.show();
         });
     }
+
+    private List<Fragment> getFragments() {
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new MyGardenFragment());
+        fragments.add(new SchedulePlantFragment());
+
+        return fragments;
     }
 
     private void updateToolbarIcon(MaterialToolbar toolbar, boolean isShowing) {
@@ -172,7 +207,7 @@ public class HomeActivity extends AppCompatActivity {
                     String category = categoryView.getText().toString();
 
                     if (plantUri != null) {
-                        PlantModel plant = new PlantModel(plantUri, name, category);
+                        PlantModel plant = new PlantModel(null, name, category);
                         updatePlant(plant);
 
                     } else {

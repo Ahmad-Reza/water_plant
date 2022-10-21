@@ -15,4 +15,5 @@
     <color name="textColor">#3f3f3f</color>
     <color name="colorDisable">#BDBDBD</color>
     <color name="actionSuccess">#31D0AA</color>
+    <color name="color_shadow">#F5F5F5</color>
 </resources>
