@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -26,10 +27,11 @@ import com.example.waterplant.model.PlantModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
-public class HomeActivity extends AppCompatActivity implements AddPlantBottomSheetFragment.SheetItemClickListener {
+public class HomeActivity extends AppCompatActivity {
     private static final int ADD_PLANT_REQUEST = 1000;
 
     @Override
@@ -102,7 +104,30 @@ public class HomeActivity extends AppCompatActivity implements AddPlantBottomShe
         gardenTab.setOnClickListener(listener);
         scheduleTab.setOnClickListener(listener);
         FloatingActionButton addPlantBtn = findViewById(R.id.add_plant_button);
-        addPlantBtn.setOnClickListener(view -> new AddPlantBottomSheetFragment().show(getSupportFragmentManager(), "AddPlantBottomSheetFragment"));
+        addPlantBtn.setOnClickListener(view -> {
+            BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
+            final View sheetLayout = LayoutInflater.from(this).inflate(R.layout.choose_plant_from_sheet, findViewById(R.id.root_layout));
+            ImageView camera = sheetLayout.findViewById(R.id.camera_view);
+            camera.setOnClickListener(view1 -> {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, ADD_PLANT_REQUEST);
+
+                sheetDialog.dismiss();
+            });
+
+            ImageView gallery = sheetLayout.findViewById(R.id.gallery_view);
+            gallery.setOnClickListener(view1 -> {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/png");
+                startActivityForResult(intent, ADD_PLANT_REQUEST);
+
+                sheetDialog.dismiss();
+            });
+
+            sheetDialog.setContentView(sheetLayout);
+            sheetDialog.show();
+        });
+    }
     }
 
     private void updateToolbarIcon(MaterialToolbar toolbar, boolean isShowing) {
@@ -168,18 +193,5 @@ public class HomeActivity extends AppCompatActivity implements AddPlantBottomShe
 
         // TODO update plant data into database
 
-    }
-
-    @Override
-    public void onSheetItemClick(String selectedItem) {
-        if (AddPlantBottomSheetFragment.SELECTED_CAMERA.equals(selectedItem)) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, ADD_PLANT_REQUEST);
-
-        } else if (AddPlantBottomSheetFragment.SELECTED_GALLERY.equals(selectedItem)) {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/png");
-            startActivityForResult(intent, ADD_PLANT_REQUEST);
-        }
     }
 }
