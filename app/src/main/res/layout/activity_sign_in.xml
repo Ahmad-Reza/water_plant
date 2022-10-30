@@ -147,4 +147,13 @@
             android:text="@string/sign_up_from_here_label"
             android:textColor="@color/color_primary" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_layout"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </RelativeLayout>

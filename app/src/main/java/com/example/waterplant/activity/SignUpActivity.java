@@ -3,15 +3,21 @@ package com.example.waterplant.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.waterplant.R;
+import com.example.waterplant.dataBase.UserDetailsDBHandler;
+import com.example.waterplant.model.UserDetailsModel;
+import com.example.waterplant.utilities.ResourceUtility;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 public class SignUpActivity extends AppCompatActivity {
+    public static final String USER_DETAIL_PREFERENCES = "USER_DETAIL_PREFERENCES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +58,19 @@ public class SignUpActivity extends AppCompatActivity {
 
             } else {
                 if (repeatPass.equals(password)) {
-                    Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                    startActivity(intent);
+                    UserDetailsDBHandler table = new UserDetailsDBHandler(this);
+                    table.createUserDetails(userName, email, password, isSuccessful -> {
+                        UserDetailsModel userDetailsModel = new UserDetailsModel(userName, email, password);
+                        Toast.makeText(this, R.string.successful_signup_msg, Toast.LENGTH_SHORT).show();
 
+                        ResourceUtility.clearPreferences(this);
+                        String userPreferences = new Gson().toJson(userDetailsModel);
+                        ResourceUtility.updateUserPreferences(this, USER_DETAIL_PREFERENCES, userPreferences);
+
+                        Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
                 } else {
                     repeatPassLayout.setError(getString(R.string.not_match_error));
                 }

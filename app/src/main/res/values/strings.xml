@@ -30,4 +30,5 @@
     <string name="my_plant_description">Hi Ahmad, your plants waiting for your care.</string>
     <string name="about_developer_label">About Developer</string>
     <string name="log_out_label">Log Out</string>
+    <string name="successful_signup_msg">You have been sign-up successfully</string>
 </resources>
