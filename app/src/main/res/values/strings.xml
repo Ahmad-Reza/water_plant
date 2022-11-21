@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Water Plant</string>
     <string name="welcome_title">Welcome to WATER PLANT</string>
-    <string name="water_plant_description">We will help you to schedule time for particular plant to water and we will notify you on the same time with particular plant image</string>
+    <string name="water_plant_description">We will help you to schedule watering time for your plants, and we will notify you watering time of your plants</string>
     <string name="sign_up_label">Sign Up</string>
     <string name="already_member_label">Already a member?</string>
     <string name="sign_in_label">Sign in</string>
@@ -17,7 +17,7 @@
     <string name="my_garden_label">My Garden</string>
     <string name="schedule_plant_label">Schedule Plant</string>
     <string name="my_plant_label">My Plants</string>
-    <string name="choose_your_plant_from_label">Choose your Plant from...</string>
+    <string name="choose_your_plant_from_label">Choose your Plant from…</string>
     <string name="camera_label">Camera</string>
     <string name="gallery_label">Gallery</string>
     <string name="hint_name_msg">Name eg, Rose</string>
@@ -31,4 +31,8 @@
     <string name="about_developer_label">About Developer</string>
     <string name="log_out_label">Log Out</string>
     <string name="successful_signup_msg">You have been sign-up successfully</string>
+    <string name="cancel_label">Cancel</string>
+    <string name="save_label">Save</string>
+    <string name="get_started_label">Get started</string>
+    <string name="new_user_msg">New User? Create an account</string>
 </resources>

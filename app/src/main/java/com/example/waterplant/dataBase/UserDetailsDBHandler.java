@@ -14,9 +14,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class UserDetailsDBHandler extends SQLiteOpenHelper {
-    public static final String DB_NAME = "garden_db";
-    public static final int DB_VERSION = 1;
-
+    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "garden_db";
     private static final String USER_DETAILS_TABLE = "user_details";
 
     private static final String ID = "id";
