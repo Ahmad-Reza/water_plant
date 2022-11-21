@@ -17,15 +17,17 @@ import java.util.List;
 
 public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHolder> {
     private final List<PlantModel> planModels;
+    private final OnItemClickListener listener;
 
-    public GardenAdapter(List<PlantModel> planModels) {
+    public GardenAdapter(List<PlantModel> planModels, OnItemClickListener listener) {
         this.planModels = planModels;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.garden_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_garden, parent, false);
 
         return new ItemViewHolder(view);
     }
@@ -33,18 +35,23 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         PlantModel plantModel = planModels.get(position);
+        holder.setItem(plantModel);
 
-        Picasso.get().load(plantModel.getImage()).into(holder.imageView);
-        holder.nameView.setText(plantModel.getName());
-        holder.categoryView.setText(plantModel.getCategory());
+        if (plantModel != null) {
+            Picasso.get().load(plantModel.getImage()).into(holder.imageView);
+            holder.nameView.setText(plantModel.getName());
+            holder.categoryView.setText(plantModel.getCategory());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return planModels.size();
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
+        private PlantModel plant;
+
         private final ImageView imageView;
         private final TextView nameView;
         private final TextView categoryView;
@@ -55,6 +62,16 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHo
             imageView = itemView.findViewById(R.id.image_view);
             nameView = itemView.findViewById(R.id.name_view);
             categoryView = itemView.findViewById(R.id.category_view);
+
+            itemView.setOnClickListener(view -> listener.onItemClick(plant));
         }
+
+        public void setItem(PlantModel plant) {
+            this.plant = plant;
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(PlantModel plantModel);
     }
 }
