@@ -1,21 +1,21 @@
 package com.example.waterplant.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
@@ -23,9 +23,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.waterplant.R;
 import com.example.waterplant.adapter.ViewPagerAdapter;
+import com.example.waterplant.dataBase.PlantDBHandler;
 import com.example.waterplant.fragment.MyGardenFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
 import com.example.waterplant.model.PlantModel;
+import com.example.waterplant.utilities.ImageUtility;
+import com.example.waterplant.utilities.ResourceUtility;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -37,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    private static final int ADD_PLANT_REQUEST = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,10 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
 
             } else if (itemId == R.id.logout_item) {
+                ResourceUtility.clearPreferences(this);
+                Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
+                startActivity(intent);
+                finish();
 
                 return true;
             }
@@ -131,6 +137,21 @@ public class HomeActivity extends AppCompatActivity {
 
         gardenTab.setOnClickListener(listener);
         scheduleTab.setOnClickListener(listener);
+
+        ActivityResultLauncher<Intent> galleryActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            Uri plantUri = result.getData() != null ? result.getData().getData() : null;
+            plantModelDialog(viewPager, plantUri);
+        });
+
+        ActivityResultLauncher<Intent> cameraActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            Bitmap imageBitmap = result.getData() != null ? (Bitmap) result.getData().getExtras().get("data") : null;
+
+            ImageUtility imageUtility = new ImageUtility(getApplicationContext());
+            Uri plantUri = imageBitmap != null ? imageUtility.getUriFromBitmap(imageBitmap) : null;
+
+            plantModelDialog(viewPager, plantUri);
+        });
+
         FloatingActionButton addPlantBtn = findViewById(R.id.add_plant_button);
         addPlantBtn.setOnClickListener(view -> {
             BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
@@ -138,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
             ImageView camera = sheetLayout.findViewById(R.id.camera_view);
             camera.setOnClickListener(view1 -> {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, ADD_PLANT_REQUEST);
+                cameraActivityLauncher.launch(intent);
 
                 sheetDialog.dismiss();
             });
@@ -147,7 +168,7 @@ public class HomeActivity extends AppCompatActivity {
             gallery.setOnClickListener(view1 -> {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/png");
-                startActivityForResult(intent, ADD_PLANT_REQUEST);
+                galleryActivityLauncher.launch(intent);
 
                 sheetDialog.dismiss();
             });
@@ -155,6 +176,43 @@ public class HomeActivity extends AppCompatActivity {
             sheetDialog.setContentView(sheetLayout);
             sheetDialog.show();
         });
+    }
+
+    private void plantModelDialog(ViewPager2 viewPager, Uri plantUri) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View dialogView = getLayoutInflater().inflate(R.layout.plant_property_dialog, null);
+        dialogBuilder.setTitle("Plant Details");
+        dialogBuilder.setView(dialogView);
+
+        ImageView plantView = dialogView.findViewById(R.id.plant_view);
+        Picasso.get().load(plantUri).into(plantView);
+
+        EditText nameView = dialogView.findViewById(R.id.name_input);
+        EditText categoryView = dialogView.findViewById(R.id.category_input);
+
+        AlertDialog alertDialog = dialogBuilder.create();
+
+        Button saveButton = dialogView.findViewById(R.id.save_button);
+        saveButton.setOnClickListener(view -> {
+            String name = nameView.getText().toString();
+            String category = categoryView.getText().toString();
+
+            if (plantUri != null) {
+                updatePlant(new PlantModel(plantUri, name, category));
+                viewPager.setAdapter(new ViewPagerAdapter(this, getFragments()));
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Please, select Correct Image", Toast.LENGTH_SHORT).show();
+            }
+
+            alertDialog.dismiss();
+        });
+
+        Button cancelButton = dialogView.findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(view -> alertDialog.dismiss());
+
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     private List<Fragment> getFragments() {
@@ -165,68 +223,13 @@ public class HomeActivity extends AppCompatActivity {
         return fragments;
     }
 
-    private void updateToolbarIcon(MaterialToolbar toolbar, boolean isShowing) {
-        MenuItem aboutItem = toolbar.getMenu().findItem(R.id.about_item);
-        MenuItem logoutItem = toolbar.getMenu().findItem(R.id.logout_item);
-
-        if (!isShowing) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                aboutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.black));
-                logoutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.black));
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                aboutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.white));
-                logoutItem.setIconTintList(AppCompatResources.getColorStateList(getApplicationContext(), R.color.white));
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ADD_PLANT_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                Uri plantUri = data != null ? data.getData() : null;
-
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-                final View dialogView = getLayoutInflater().inflate(R.layout.plant_property_dialog, null);
-                dialogBuilder.setTitle("Plant Details");
-                dialogBuilder.setView(dialogView);
-
-                ImageView plantView = dialogView.findViewById(R.id.plant_view);
-                Picasso.get().load(plantUri).into(plantView);
-
-                EditText nameView = dialogView.findViewById(R.id.name_input);
-                EditText categoryView = dialogView.findViewById(R.id.category_input);
-
-                AlertDialog alertDialog = dialogBuilder.create();
-                dialogBuilder.setPositiveButton("Save", ((dialogInterface, i) -> {
-                    String name = nameView.getText().toString();
-                    String category = categoryView.getText().toString();
-
-                    if (plantUri != null) {
-                        PlantModel plant = new PlantModel(null, name, category);
-                        updatePlant(plant);
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Please, select Correct Image", Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
-                    }
-                }));
-
-                dialogBuilder.setNegativeButton("Cancel", ((dialogInterface, i) -> alertDialog.dismiss()));
-
-                alertDialog.setCanceledOnTouchOutside(false);
-                alertDialog.show();
-            }
-        }
-    }
-
     private void updatePlant(PlantModel plant) {
+        PlantDBHandler plantDB = new PlantDBHandler(getApplicationContext());
+        ImageUtility imageUtility = new ImageUtility(getApplicationContext());
 
-        // TODO update plant data into database
-
+        byte[] byteFromUri = imageUtility.getByteFromUri(plant.getImage());
+        if (byteFromUri != null) {
+            plantDB.createPlantData(byteFromUri, plant.getName(), plant.getCategory());
+        }
     }
 }
