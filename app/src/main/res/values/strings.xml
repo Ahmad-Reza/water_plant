@@ -35,4 +35,13 @@
     <string name="save_label">Save</string>
     <string name="get_started_label">Get started</string>
     <string name="new_user_msg">New User? Create an account</string>
+    <string name="close_label">close</string>
+    <string name="schedule_label">Schedule</string>
+    <string name="message_label">Message</string>
+    <string name="date_time_label">Date and Time</string>
+    <string name="time_picker_title">Pick a time</string>
+    <string name="date_picker_title">Pick a date</string>
+    <string name="yesterday_label">Yesterday</string>
+    <string name="today_label">Today</string>
+    <string name="tomorrow_label">Tomorrow</string>
 </resources>
