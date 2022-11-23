@@ -22,10 +22,12 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.waterplant.R;
+import com.example.waterplant.adapter.ActionListener;
 import com.example.waterplant.adapter.ViewPagerAdapter;
 import com.example.waterplant.dataBase.PlantDBHandler;
 import com.example.waterplant.fragment.MyGardenFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
+import com.example.waterplant.fragment.SchedulePlantModel;
 import com.example.waterplant.model.PlantModel;
 import com.example.waterplant.utilities.ImageUtility;
 import com.example.waterplant.utilities.ResourceUtility;
@@ -39,7 +41,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements ActionListener<SchedulePlantModel> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,5 +233,15 @@ public class HomeActivity extends AppCompatActivity {
         if (byteFromUri != null) {
             plantDB.createPlantData(byteFromUri, plant.getName(), plant.getCategory());
         }
+    }
+
+    @Override
+    public void onActionPerformed(SchedulePlantModel schedulePlantModel) {
+        for (Fragment fragment : getFragments()) {
+            if (fragment instanceof ActionListener)
+                ((ActionListener) fragment).onActionPerformed(schedulePlantModel);
+        }
+
+        Toast.makeText(getApplicationContext(), "Plant has been scheduled successfully", Toast.LENGTH_SHORT).show();
     }
 }

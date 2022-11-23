@@ -4,20 +4,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waterplant.R;
+import com.example.waterplant.adapter.ActionListener;
 import com.example.waterplant.adapter.GardenAdapter;
 import com.example.waterplant.dataBase.PlantDBHandler;
 import com.example.waterplant.model.PlantModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MyGardenFragment extends Fragment implements GardenAdapter.OnItemClickListener {
+public class MyGardenFragment extends Fragment implements ActionListener<Object> {
+    private static final String SCHEDULE_FORM_FRAGMENT = "SCHEDULE_FORM_FRAGMENT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +40,14 @@ public class MyGardenFragment extends Fragment implements GardenAdapter.OnItemCl
     }
 
     @Override
-    public void onItemClick(PlantModel plantModel) {
+    public void onActionPerformed(Object item) {
+        if (item instanceof PlantModel) {
+            PlantModel plantModel = (PlantModel) item;
+            ScheduleFormFragment formFragment = ScheduleFormFragment.newInstance(plantModel);
+            formFragment.show(getChildFragmentManager(), SCHEDULE_FORM_FRAGMENT);
 
+        } else if (item instanceof SchedulePlantModel) {
+            SchedulePlantModel schedulePlantModel = (SchedulePlantModel) item;
+        }
     }
 }

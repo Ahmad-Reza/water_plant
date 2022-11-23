@@ -17,9 +17,9 @@ import java.util.List;
 
 public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHolder> {
     private final List<PlantModel> planModels;
-    private final OnItemClickListener listener;
+    private final ActionListener<Object> listener;
 
-    public GardenAdapter(List<PlantModel> planModels, OnItemClickListener listener) {
+    public GardenAdapter(List<PlantModel> planModels, ActionListener<Object> listener) {
         this.planModels = planModels;
         this.listener = listener;
     }
@@ -63,15 +63,11 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHo
             nameView = itemView.findViewById(R.id.name_view);
             categoryView = itemView.findViewById(R.id.category_view);
 
-            itemView.setOnClickListener(view -> listener.onItemClick(plant));
+            itemView.setOnClickListener(view -> listener.onActionPerformed(plant));
         }
 
         public void setItem(PlantModel plant) {
             this.plant = plant;
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(PlantModel plantModel);
     }
 }
