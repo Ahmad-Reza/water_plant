@@ -70,10 +70,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            callback.accept(true);
-        }
+        callback.accept(true);
 
         return plantModels;
     }

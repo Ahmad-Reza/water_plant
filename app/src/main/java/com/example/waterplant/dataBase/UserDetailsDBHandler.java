@@ -48,9 +48,8 @@ public class UserDetailsDBHandler extends SQLiteOpenHelper {
 
         database.insert(USER_DETAILS_TABLE, null, values);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            callback.accept(true);
-        }
+        database.close();
+        callback.accept(true);
     }
 
     public List<UserDetailsModel> fetchUserDetails() {
