@@ -4,22 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waterplant.R;
-import com.example.waterplant.adapter.ActionListener;
 import com.example.waterplant.adapter.GardenAdapter;
 import com.example.waterplant.dataBase.PlantDBHandler;
 import com.example.waterplant.model.PlantModel;
 
 import java.util.List;
 
-public class MyGardenFragment extends Fragment implements ActionListener<Object> {
-    private static final String SCHEDULE_FORM_FRAGMENT = "SCHEDULE_FORM_FRAGMENT";
+public class MyGardenFragment extends Fragment implements ActionListener<SchedulePlantModel> {
+    private ActionListener<SchedulePlantModel> actionListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,21 +31,22 @@ public class MyGardenFragment extends Fragment implements ActionListener<Object>
 
         RecyclerView recycler = rootView.findViewById(R.id.garden_recycler);
         recycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        GardenAdapter adapter = new GardenAdapter(plantModels, this);
+        GardenAdapter adapter = new GardenAdapter(plantModels, (position, item) -> {
+            ScheduleFormFragment formFragment = ScheduleFormFragment.newInstance(position, item);
+            formFragment.show(getChildFragmentManager(), "scheduleFormFragment");
+        });
+
         recycler.setAdapter(adapter);
 
         return rootView;
     }
 
     @Override
-    public void onActionPerformed(Object item) {
-        if (item instanceof PlantModel) {
-            PlantModel plantModel = (PlantModel) item;
-            ScheduleFormFragment formFragment = ScheduleFormFragment.newInstance(plantModel);
-            formFragment.show(getChildFragmentManager(), SCHEDULE_FORM_FRAGMENT);
+    public void onActionPerformed(Action actionId, int position, SchedulePlantModel item) {
+        actionListener.onActionPerformed(actionId, position, item);
+    }
 
-        } else if (item instanceof SchedulePlantModel) {
-            SchedulePlantModel schedulePlantModel = (SchedulePlantModel) item;
-        }
+    public void addActionListener(ActionListener<SchedulePlantModel> actionListener) {
+        this.actionListener = actionListener;
     }
 }

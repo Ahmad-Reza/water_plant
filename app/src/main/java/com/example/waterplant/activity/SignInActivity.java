@@ -73,21 +73,25 @@ public class SignInActivity extends AppCompatActivity {
 
                 UserDetailsDBHandler userData = new UserDetailsDBHandler(this);
                 List<UserDetailsModel> userDetailsModels = userData.fetchUserDetails();
-                for (UserDetailsModel userDetailsModel : userDetailsModels) {
-                    if (userDetailsModel.getUsername().equals(userName) && userDetailsModel.getPassword().equals(password)) {
-                        ResourceUtility.clearPreferences(this);
+                if (userDetailsModels != null && !userDetailsModels.isEmpty()) {
+                    for (UserDetailsModel userDetailsModel : userDetailsModels) {
+                        if (userDetailsModel.getUsername().equals(userName) && userDetailsModel.getPassword().equals(password)) {
+                            ResourceUtility.clearPreferences(this);
 
-                        String userDetailPreference = new Gson().toJson(userDetailsModel);
-                        ResourceUtility.updateUserPreferences(this, SignUpActivity.USER_DETAIL_PREFERENCES, userDetailPreference);
+                            String userDetailPreference = new Gson().toJson(userDetailsModel);
+                            ResourceUtility.updateUserPreferences(this, SignUpActivity.USER_DETAIL_PREFERENCES, userDetailPreference);
 
-                        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
+                            Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        if (userDetailsModels.indexOf(userDetailsModel) == userDetailsModels.size() - 1) {
+                            passwordLayout.setError(getString(R.string.invalid_authorization_error));
+                        }
                     }
-
-                    if (userDetailsModels.indexOf(userDetailsModel) == userDetailsModels.size() - 1) {
-                        passwordLayout.setError(getString(R.string.invalid_authorization_error));
-                    }
+                } else {
+                    passwordLayout.setError(getString(R.string.invalid_authorization_error));
                 }
                 loadingLayout.setVisibility(View.GONE);
             }

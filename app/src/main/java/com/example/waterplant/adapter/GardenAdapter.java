@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waterplant.R;
+import com.example.waterplant.fragment.ActionListener;
 import com.example.waterplant.model.PlantModel;
 import com.squareup.picasso.Picasso;
 
@@ -17,9 +18,9 @@ import java.util.List;
 
 public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHolder> {
     private final List<PlantModel> planModels;
-    private final ActionListener<Object> listener;
+    private final ItemClickListener<PlantModel> listener;
 
-    public GardenAdapter(List<PlantModel> planModels, ActionListener<Object> listener) {
+    public GardenAdapter(List<PlantModel> planModels, ItemClickListener<PlantModel> listener) {
         this.planModels = planModels;
         this.listener = listener;
     }
@@ -63,7 +64,7 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ItemViewHo
             nameView = itemView.findViewById(R.id.name_view);
             categoryView = itemView.findViewById(R.id.category_view);
 
-            itemView.setOnClickListener(view -> listener.onActionPerformed(plant));
+            itemView.setOnClickListener(view -> listener.onItemClick(getLayoutPosition(), plant));
         }
 
         public void setItem(PlantModel plant) {

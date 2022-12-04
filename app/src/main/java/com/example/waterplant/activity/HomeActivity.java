@@ -22,10 +22,12 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.waterplant.R;
-import com.example.waterplant.adapter.ActionListener;
 import com.example.waterplant.adapter.ViewPagerAdapter;
 import com.example.waterplant.dataBase.PlantDBHandler;
+import com.example.waterplant.dataBase.ScheduleDBHandler;
+import com.example.waterplant.fragment.ActionListener;
 import com.example.waterplant.fragment.MyGardenFragment;
+import com.example.waterplant.fragment.ScheduleFormFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
 import com.example.waterplant.fragment.SchedulePlantModel;
 import com.example.waterplant.model.PlantModel;
@@ -42,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements ActionListener<SchedulePlantModel> {
+    private List<Fragment> fragments;
+    private ViewPager2 viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +97,7 @@ public class HomeActivity extends AppCompatActivity implements ActionListener<Sc
         TextView gardenTab = findViewById(R.id.garden_tab_view);
         TextView scheduleTab = findViewById(R.id.schedule_tab_view);
 
-        ViewPager2 viewPager = findViewById(R.id.viewpager_view);
+        viewPager = findViewById(R.id.viewpager_view);
         viewPager.setAdapter(new ViewPagerAdapter(this, getFragments()));
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -218,9 +222,14 @@ public class HomeActivity extends AppCompatActivity implements ActionListener<Sc
     }
 
     private List<Fragment> getFragments() {
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new MyGardenFragment());
+        fragments = new ArrayList<>();
+
+        MyGardenFragment gardenFragment = new MyGardenFragment();
+        gardenFragment.addActionListener(this);
+        fragments.add(gardenFragment);
+
         fragments.add(new SchedulePlantFragment());
+
 
         return fragments;
     }
@@ -236,12 +245,21 @@ public class HomeActivity extends AppCompatActivity implements ActionListener<Sc
     }
 
     @Override
-    public void onActionPerformed(SchedulePlantModel schedulePlantModel) {
+    public void onActionPerformed(Action actionId, int position, SchedulePlantModel schedulePlantModel) {
         for (Fragment fragment : getFragments()) {
-            if (fragment instanceof ActionListener)
-                ((ActionListener) fragment).onActionPerformed(schedulePlantModel);
-        }
+            if (fragment instanceof SchedulePlantFragment) {
+                schedulePlantModel.setId(String.valueOf(position));
+                ScheduleDBHandler scheduleDBHandler = new ScheduleDBHandler(getApplicationContext());
+                scheduleDBHandler.updateSchedulePlant(position, actionId, schedulePlantModel, isSuccessful -> {
+                    Toast.makeText(getApplicationContext(), "Plant has been scheduled successfully", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(getApplicationContext(), "Plant has been scheduled successfully", Toast.LENGTH_SHORT).show();
+                    SchedulePlantFragment formFragment = SchedulePlantFragment.newInstance(schedulePlantModel);
+                    fragments.set(fragments.indexOf(fragment), formFragment);
+
+                    viewPager.setAdapter(new ViewPagerAdapter(this, fragments));
+
+                });
+            }
+        }
     }
 }
