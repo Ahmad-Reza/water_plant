@@ -8,6 +8,7 @@ import com.example.waterplant.model.PlantModel;
 import java.time.LocalDateTime;
 
 public class SchedulePlantModel implements Parcelable {
+    private String id;
     private PlantModel plantModel;
     private String message;
     private LocalDateTime localDateTime;
@@ -43,6 +44,14 @@ public class SchedulePlantModel implements Parcelable {
         this.plantModel = plantModel;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -57,6 +66,13 @@ public class SchedulePlantModel implements Parcelable {
 
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SchedulePlantModel{" +
+                "id='" + id + '\'' +
+                '}';
     }
 
     @Override
