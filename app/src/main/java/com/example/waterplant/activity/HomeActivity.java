@@ -1,9 +1,12 @@
 package com.example.waterplant.activity;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -27,10 +31,11 @@ import com.example.waterplant.dataBase.PlantDBHandler;
 import com.example.waterplant.dataBase.ScheduleDBHandler;
 import com.example.waterplant.fragment.ActionListener;
 import com.example.waterplant.fragment.MyGardenFragment;
-import com.example.waterplant.fragment.ScheduleFormFragment;
 import com.example.waterplant.fragment.SchedulePlantFragment;
 import com.example.waterplant.fragment.SchedulePlantModel;
 import com.example.waterplant.model.PlantModel;
+import com.example.waterplant.notification.AlarmReceiver;
+import com.example.waterplant.notification.ReminderManager;
 import com.example.waterplant.utilities.ImageUtility;
 import com.example.waterplant.utilities.ResourceUtility;
 import com.google.android.material.appbar.AppBarLayout;
@@ -226,10 +231,9 @@ public class HomeActivity extends AppCompatActivity implements ActionListener<Sc
 
         MyGardenFragment gardenFragment = new MyGardenFragment();
         gardenFragment.addActionListener(this);
+
         fragments.add(gardenFragment);
-
         fragments.add(new SchedulePlantFragment());
-
 
         return fragments;
     }
@@ -251,15 +255,30 @@ public class HomeActivity extends AppCompatActivity implements ActionListener<Sc
                 schedulePlantModel.setId(String.valueOf(position));
                 ScheduleDBHandler scheduleDBHandler = new ScheduleDBHandler(getApplicationContext());
                 scheduleDBHandler.updateSchedulePlant(position, actionId, schedulePlantModel, isSuccessful -> {
-                    Toast.makeText(getApplicationContext(), "Plant has been scheduled successfully", Toast.LENGTH_SHORT).show();
+                    if (isSuccessful) {
+                        fragments.set(fragments.indexOf(fragment), fragment);
 
-                    SchedulePlantFragment formFragment = SchedulePlantFragment.newInstance(schedulePlantModel);
-                    fragments.set(fragments.indexOf(fragment), formFragment);
+                        viewPager.setAdapter(new ViewPagerAdapter(this, fragments));
+                        Toast.makeText(getApplicationContext(), "Plant has been scheduled successfully", Toast.LENGTH_SHORT).show();
 
-                    viewPager.setAdapter(new ViewPagerAdapter(this, fragments));
-
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            createNotificationsChannels();
+                            ReminderManager.startReminder(this, schedulePlantModel);
+                        }
+                    }
                 });
             }
         }
+    }
+
+    private void createNotificationsChannels() {
+        NotificationChannel notificationChannel = new NotificationChannel(
+                AlarmReceiver.NOTIFICATION_CHANNEL_ID,
+                "Daily water reminder",
+                NotificationManager.IMPORTANCE_HIGH);
+
+        NotificationManager notificationManager = ContextCompat.getSystemService(this, NotificationManager.class);
+        if (notificationManager != null)
+            notificationManager.createNotificationChannel(notificationChannel);
     }
 }

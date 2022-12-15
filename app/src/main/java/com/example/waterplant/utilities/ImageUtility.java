@@ -38,7 +38,7 @@ public class ImageUtility {
         return returnVal;
     }
 
-    private Bitmap getBitmapFromUri(Uri imageUri) {
+    public Bitmap getBitmapFromUri(Uri imageUri) {
         Bitmap bitmap = null;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
