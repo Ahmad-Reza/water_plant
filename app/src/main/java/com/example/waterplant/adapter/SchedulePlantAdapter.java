@@ -1,5 +1,6 @@
 package com.example.waterplant.adapter;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.waterplant.R;
 
+import com.example.waterplant.fragment.ScheduleFormFragment;
 import com.squareup.picasso.Picasso;
 import com.example.waterplant.fragment.SchedulePlantModel;
 
@@ -42,7 +44,7 @@ public class SchedulePlantAdapter extends RecyclerView.Adapter<SchedulePlantAdap
             holder.plantName.setText(schedulePlantModel.getPlantModel().getName());
             holder.plantMessage.setText(schedulePlantModel.getMessage());
             Picasso.get().load(schedulePlantModel.getPlantModel().getImage()).into(holder.plantImage);
-            holder.scheduleTime.setText(schedulePlantModel.getLocalDateTime().toString());
+            holder.scheduleTime.setText(ScheduleFormFragment.formatDateTime(schedulePlantModel.getLocalDateTime(), Resources.getSystem()));
         }
     }
 
