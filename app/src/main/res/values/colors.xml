@@ -17,4 +17,5 @@
     <color name="colorDisable">#BDBDBD</color>
     <color name="actionSuccess">#31D0AA</color>
     <color name="color_shadow">#F5F5F5</color>
+    <color name="card_bg_color">#335ABD5E</color>
 </resources>

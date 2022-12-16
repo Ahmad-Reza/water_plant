@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.waterplant.R;
 import com.example.waterplant.adapter.GardenAdapter;
@@ -30,7 +32,8 @@ public class MyGardenFragment extends Fragment implements ActionListener<Schedul
         List<PlantModel> plantModels = dbHandler.fetchPlanData(isSuccessful -> loadingLayout.setVisibility(View.GONE));
 
         RecyclerView recycler = rootView.findViewById(R.id.garden_recycler);
-        recycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        recycler.setLayoutManager(staggeredGridLayoutManager);
         GardenAdapter adapter = new GardenAdapter(plantModels, (position, item) -> {
             ScheduleFormFragment formFragment = ScheduleFormFragment.newInstance(position, item);
             formFragment.show(getChildFragmentManager(), "scheduleFormFragment");
