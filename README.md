@@ -8,21 +8,18 @@ This Application will help you to schedule a time for water your plant, app will
 
 **1. Account setup**
 
-<div class="row" style="display:flex">
-  <div class="column" style="padding:5px">
-    <img src="https://user-images.githubusercontent.com/46816394/208217922-dcb3e0e9-333a-42e3-890a-e4b2c3a3f98d.jpg" height="200" width="100">
-  </div>
-  <div class="column" style="padding:5px">
-    <img src="https://user-images.githubusercontent.com/46816394/208217937-5eda4b69-7ae4-4e2d-b6db-c626be648a0a.jpg" height="200" width="100">
-  </div>
-  <div class="column" style="padding:5px">
-    <img src="https://user-images.githubusercontent.com/46816394/208217929-371001e2-c97c-4eb3-9865-e01adbb19c2f.jpg" height="200" width="100">
-  </div>
+<div class="row">
+    <img src="https://user-images.githubusercontent.com/46816394/208217922-dcb3e0e9-333a-42e3-890a-e4b2c3a3f98d.jpg" style="padding:5px" height="300" width="150">
+    <img src="https://user-images.githubusercontent.com/46816394/208217937-5eda4b69-7ae4-4e2d-b6db-c626be648a0a.jpg" style="padding:5px" height="300" width="150">
+    <img src="https://user-images.githubusercontent.com/46816394/208217929-371001e2-c97c-4eb3-9865-e01adbb19c2f.jpg" style="padding:5px" height="300" width="150">
 </div>
 
 **2. Add plant**
+
 #### a.) You can add plant by choosing camere or gallery
+
 #### b.) Enter plant name and category(you can add message according to your choice)
+
 #### c.) Save, you will be able to see add plant in your garden portfolio
 
 <div class="row" style="display:flex">
@@ -38,8 +35,11 @@ This Application will help you to schedule a time for water your plant, app will
 </div>
 
 **3. Schedule plant**
+
 #### a.) Click that plant which one you wanna schedule
-#### b.) Type message and set schedule time 
+
+#### b.) Type message and set schedule time
+
 #### a.) Water Plant app will sent you a notification at schedule time
 
 <div class="row" style="display:flex">
@@ -52,7 +52,9 @@ This Application will help you to schedule a time for water your plant, app will
 </div>
 
 **Schedule plants**
+
 #### a.) You can see schedule plants by clicking on schedule plant tab
+
 #### b.) You can modify schedule plant message and time as well delete schedule plant
 
 <div class="row" style="display:flex">
