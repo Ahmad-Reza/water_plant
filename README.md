@@ -1,6 +1,6 @@
 # **Water your plant**
 
-This Application will help you to schedule a time for water your plant, app will remind you at schedule time.
+This Application will help you to schedule a reminder for water your plant, app will remind you at schedule time.
 
 ## **How to use**
 
