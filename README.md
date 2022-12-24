@@ -1,6 +1,7 @@
 # **Water your plant**
 
 This Application will help you to schedule a reminder for water your plant, app will remind you at schedule time.
+**Water plant APK - https://github.com/Ahmad-Reza/water_plant/blob/main/water-plant.apk**
 
 ## **How to use**
 
